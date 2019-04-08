@@ -10,8 +10,7 @@ defmodule Warehouse do
   def get_position(positions, ask_input, user_input) do
     cond do
       ask_input == true ->
-        input = IO.gets("Whats the X,Y positions? ") |> String.trim |> String.replace(",", "")
-        new_positions = Enum.join([input], " ")
+        new_positions = IO.gets("Whats the X,Y positions? ") |> String.trim |> String.replace(",", "")
 
         # Filter to check for 0
         input_filter(positions, new_positions)
