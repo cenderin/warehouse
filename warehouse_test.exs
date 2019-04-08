@@ -27,6 +27,7 @@ defmodule WarehouseTest do
   end
 
   test "100000,100000" do
+    # Can't get this test to pass, not sure what is wrong with the formula on the determine_position method...
     output = Warehouse.get_position([100000,100000], false)
     assert output == 20000000001
   end
