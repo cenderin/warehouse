@@ -4,41 +4,40 @@ defmodule Warehouse do
   For the coordinates described in the input, return the id of the item in those coordinates..
   """
   def initialize_program do
-    get_position("", true, [])
+    get_position([], true)
   end
 
-  def get_position(positions, ask_input, user_input) do
+  def get_position(positions, ask_input) do
     cond do
       ask_input == true ->
-        new_positions = IO.gets("Whats the X,Y positions? ") |> String.trim |> String.replace(",", "")
-
-        # Filter to check for 0
-        input_filter(positions, new_positions)
+        grab_input(positions)
       ask_input == false ->
-        new_positions = user_input
-        IO.puts(["#{positions} #{new_positions}"])
-        get_position(["#{positions} #{new_positions}"], true, [])
+        determine_position(positions)
     end
-
   end
 
-  def determine_position(positions) do
-    IO.puts "Input Complete"
-    IO.puts "************************"
-    IO.puts(["#{positions}"])
+  def determine_position(new_input) do
+    first_digit = List.first(new_input)
+    second_digit = List.last(new_input)
+    total = first_digit + second_digit
 
-    exit(:shutdown)
-    # position_list = List.flatten(Regex.scan(~r/../, positions))
-    # IO.puts(position_list)
-    # Split string every 2 numbers, calculate and spit out the solutions
+    location = div((total - 1) * (total - 2), 2) + first_digit
+    location
+  end
+
+  defp grab_input(current_input) do
+    input = IO.gets("") |> String.trim |> String.to_integer
+    new_positions = current_input ++ [input]
+    input_filter(new_positions, input)
   end
 
   defp input_filter(current_positions, input) do
     cond do
-      String.contains?(input, "0") ->
-        determine_position(current_positions)
+      input == 0 ->
+        final_input = List.delete_at(current_positions, -1)
+        get_position(final_input, false)
       true ->
-        get_position(current_positions, false, input)
+        get_position(current_positions, true)
     end
   end
 end
